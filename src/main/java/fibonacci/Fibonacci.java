@@ -1,33 +1,32 @@
 package fibonacci;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Fibonacci {
-    private static List<Integer> fibs = fibonacciGenerator(Arrays.asList(0, 1), 350);
+    private static final List<Integer> FIBONACCI_STARTER = IntStream.rangeClosed(0, 1).boxed().collect(Collectors.toList());
 
-    static List<Integer> fibonacciGenerator(List<Integer> fibonacciNumbers, Integer maxFib) {
+    private static List<Integer> fibonacciNumbers = fibonacciGenerator(FIBONACCI_STARTER);
+
+    public static Boolean isFibonacci(Integer a) {
+        return fibonacciNumbers.contains(a);
+    }
+
+    public static List<Integer> fibonacciGenerator(List<Integer> fibonacciNumbers) {
         Integer newFibonacci = last(fibonacciNumbers) + nextToLast(fibonacciNumbers);
-        if (newFibonacci > maxFib) {
+        if (newFibonacci > 350) {
             return fibonacciNumbers;
-        } else {
-            List<Integer> numbers = new ArrayList<>(fibonacciNumbers);
-            numbers.add(newFibonacci);
-            return fibonacciGenerator(numbers, maxFib);
         }
+        fibonacciNumbers.add(newFibonacci);
+        return fibonacciGenerator(fibonacciNumbers);
     }
 
-    static Boolean isFibonacci(Integer a) {
-        return fibs.contains(a);
+    private static Integer last(List<Integer> list) {
+        return list.get(list.size() - 1);
     }
 
-    private static <T> T last(List<T> numeros) {
-        return numeros.get(numeros.size() - 1);
+    private static Integer nextToLast(List<Integer> list) {
+        return list.get(list.size() - 2);
     }
-
-    private static <T> T nextToLast(List<T> numeros) {
-        return numeros.get(numeros.size() - 2);
-    }
-
 }
