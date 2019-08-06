@@ -7,46 +7,38 @@ import times_futebol.exceptions.TimeNaoEncontradoException;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class DesafioMeuTimeApplication implements MeuTimeInterface {
 
-    private List<TimeDeFutebol> times = new ArrayList<>();
+    private Map<Long, TimeDeFutebol> times = new HashMap<>();
 
-    private List<Jogador> jogadores = new ArrayList<>();
+    private Map<Long, Jogador> jogadores = new HashMap<>();
 
     //    @Desafio("incluirTime") #
     public void incluirTime(Long id, String nome, LocalDate dataCriacao,
                             String corUniformePrincipal, String corUniformeSecundario) {
-        times.stream()
-                .filter(time -> time.getId().equals(id))
-                .findFirst()
-                .ifPresent(o -> {
-                    throw new IdentificadorUtilizadoException();
-                });
+        if (times.containsKey(id)) {
+            throw new IdentificadorUtilizadoException();
+        }
 
         TimeDeFutebol timeDeFutebol = new TimeDeFutebol(id, nome, dataCriacao,
                 corUniformePrincipal, corUniformeSecundario);
-        times.add(timeDeFutebol);
+        times.put(id, timeDeFutebol);
     }
 
     //    @Desafio("incluirJogador") #
     public void incluirJogador(Long id, Long idTime, String nome, LocalDate dataNascimento,
                                Integer nivelHabilidade, BigDecimal salario) {
         buscarTimePorId(idTime);
-        jogadores.stream()
-                .filter(jogador -> jogador.getId().equals(id))
-                .findFirst()
-                .ifPresent(jogador -> {
-                    throw new IdentificadorUtilizadoException();
-                });
+        if (jogadores.containsKey(id)) {
+            throw new IdentificadorUtilizadoException();
+        }
 
         Jogador jogador = new Jogador(id, idTime, nome, dataNascimento, nivelHabilidade, salario);
-        jogadores.add(jogador);
+        jogadores.put(id, jogador);
     }
 
     //    @Desafio("definirCapitao") #
@@ -78,8 +70,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
     //    @Desafio("buscarJogadoresDoTime") #
     public List<Long> buscarJogadoresDoTime(Long idTime) {
         buscarTimePorId(idTime);
-        return jogadores.stream()
-                .filter(jogador -> jogador.getIdTime().equals(idTime))
+        return buscarJogadoresDoTimeStream(idTime)
                 .map(Jogador::getId)
                 .collect(Collectors.toList());
     }
@@ -87,8 +78,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
     //    @Desafio("buscarMelhorJogadorDoTime") #
     public Long buscarMelhorJogadorDoTime(Long idTime) {
         buscarTimePorId(idTime);
-        return jogadores.stream()
-                .filter(jogador -> jogador.getIdTime().equals(idTime))
+        return buscarJogadoresDoTimeStream(idTime)
                 .max(Comparator.comparing(Jogador::getNivelHabilidade)
                         .thenComparing(Comparator.comparing(Jogador::getId).reversed()))
                 .map(Jogador::getId)
@@ -96,51 +86,50 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
     }
 
     //    @Desafio("buscarJogadorMaisVelho") #
+
     public Long buscarJogadorMaisVelho(Long idTime) {
         buscarTimePorId(idTime);
-        return jogadores.stream()
-                .filter(jogador -> jogador.getIdTime().equals(idTime))
+        return buscarJogadoresDoTimeStream(idTime)
                 .min(Comparator.comparing(Jogador::getDataNascimento)
                         .thenComparing(Jogador::getId))
                 .map(Jogador::getId)
                 .orElse(null);
     }
-
     //    @Desafio("buscarTimes") #
+
     public List<Long> buscarTimes() {
-        return times.stream()
-                .map(TimeDeFutebol::getId)
+        return times.keySet()
+                .stream()
                 .sorted()
                 .collect(Collectors.toList());
     }
-
     //    @Desafio("buscarJogadorMaiorSalario") #
+
     public Long buscarJogadorMaiorSalario(Long idTime) {
         buscarTimePorId(idTime);
-        return jogadores.stream()
-                .filter(jogador -> jogador.getIdTime().equals(idTime))
+        return buscarJogadoresDoTimeStream(idTime)
                 .max(Comparator.comparing(Jogador::getSalario)
                         .thenComparing(Comparator.comparing(Jogador::getId).reversed()))
                 .map(Jogador::getId)
                 .orElse(null);
     }
-
     //    @Desafio("buscarSalarioDoJogador") #
+
     public BigDecimal buscarSalarioDoJogador(Long idJogador) {
         return buscarJogadorPorId(idJogador).getSalario();
     }
-
     //    @Desafio("buscarTopJogadores")
+
     public List<Long> buscarTopJogadores(Integer top) {
-        return jogadores.stream()
+        return jogadores.values().stream()
                 .sorted(Comparator.comparing(Jogador::getNivelHabilidade).reversed()
-                        .thenComparing(Comparator.comparing(Jogador::getId)))
+                        .thenComparing(Jogador::getId))
                 .limit(top)
                 .map(Jogador::getId)
                 .collect(Collectors.toList());
     }
-
     //    @Desafio("buscarCorCamisaTimeDeFora")
+
     public String buscarCorCamisaTimeDeFora(Long idTimeDaCasa, Long idTimeDeFora) {
         TimeDeFutebol timeDaCasa = buscarTimePorId(idTimeDaCasa);
         TimeDeFutebol timeDeFora = buscarTimePorId(idTimeDeFora);
@@ -150,26 +139,33 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
                 : timeDeFora.getCorUniformePrincipal();
     }
 
+    private Stream<Jogador> buscarJogadoresDoTimeStream(Long idTime) {
+        return jogadores.values().stream()
+                .filter(jogador -> jogador.getIdTime().equals(idTime));
+    }
+
     private TimeDeFutebol buscarTimePorId(Long id) {
-        return times.stream()
-                .filter(time -> time.getId().equals(id))
-                .findFirst()
-                .orElseThrow(TimeNaoEncontradoException::new);
+        TimeDeFutebol timeDeFutebol = times.get(id);
+        if (Objects.isNull(timeDeFutebol)) {
+            throw new TimeNaoEncontradoException();
+        }
+        return timeDeFutebol;
     }
 
     private Jogador buscarJogadorPorId(Long id) {
-        return jogadores.stream()
-                .filter(j -> j.getId().equals(id))
-                .findFirst()
-                .orElseThrow(JogadorNaoEncontradoException::new);
+        Jogador jogador = jogadores.get(id);
+        if (Objects.isNull(jogador)) {
+            throw new JogadorNaoEncontradoException();
+        }
+        return jogador;
     }
 
 
-    public List<TimeDeFutebol> getTimes() {
+    public Map<Long, TimeDeFutebol> getTimes() {
         return times;
     }
 
-    public List<Jogador> getJogadores() {
+    public Map<Long, Jogador> getJogadores() {
         return jogadores;
     }
 }

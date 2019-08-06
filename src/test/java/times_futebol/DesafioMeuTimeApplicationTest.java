@@ -33,7 +33,7 @@ class DesafioMeuTimeApplicationTest {
 
         desafioMeuTimeApplication.incluirTime(2L, "time", LocalDate.now(), "cor1", "cor2");
 
-        assertEquals(timeDeFutebol, desafioMeuTimeApplication.getTimes().get(1));
+        assertEquals(timeDeFutebol, desafioMeuTimeApplication.getTimes().get(2L));
     }
 
     @Test
@@ -48,7 +48,7 @@ class DesafioMeuTimeApplicationTest {
 
         desafioMeuTimeApplication.incluirJogador(2L, 1L, "Jarlieimisom", LocalDate.now().minusYears(17L), 1, BigDecimal.TEN);
 
-        assertEquals(jogador, desafioMeuTimeApplication.getJogadores().get(1));
+        assertEquals(jogador, desafioMeuTimeApplication.getJogadores().get(2L));
     }
 
     @Test
@@ -61,7 +61,7 @@ class DesafioMeuTimeApplicationTest {
     void deveDefinirCapitaoDoTime() {
         desafioMeuTimeApplication.definirCapitao(1L);
 
-        assertEquals(1L, desafioMeuTimeApplication.getTimes().get(0).getIdCapitao());
+        assertEquals(1L, desafioMeuTimeApplication.getTimes().get(1L).getIdCapitao());
     }
 
     @Test
@@ -166,7 +166,7 @@ class DesafioMeuTimeApplicationTest {
 
     @Test
     void deveRetornarListaVaziaAoBuscarListaDeTimesCasoNaoExista() {
-        desafioMeuTimeApplication.getTimes().remove(0);
+        desafioMeuTimeApplication.getTimes().remove(1L);
 
         List<Long> times = desafioMeuTimeApplication.buscarTimes();
 
