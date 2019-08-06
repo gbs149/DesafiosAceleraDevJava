@@ -1,4 +1,4 @@
 package times_futebol.exceptions;
 
-public class JogadorNaoEncontradoException extends Throwable {
+public class JogadorNaoEncontradoException extends RuntimeException {
 }

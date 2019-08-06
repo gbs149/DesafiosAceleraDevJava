@@ -1,10 +1,8 @@
 package times_futebol;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
-import static times_futebol.NotNullValidator.validateNotNull;
+import static times_futebol.NotNullValidador.validarNotNull;
 
 public class TimeDeFutebol {
     private Long id;
@@ -13,23 +11,17 @@ public class TimeDeFutebol {
     private LocalDate dataCriacao;
     private String corUniformePrincipal;
     private String corUniformeSecundario;
-    private List<Jogador> jogadores;
 
     public TimeDeFutebol(Long id, String nome, LocalDate dataCriacao, String corUniformePrincipal,
                          String corUniformeSecundario) {
 
-        validateNotNull(id, nome, dataCriacao, corUniformePrincipal, corUniformeSecundario);
+        validarNotNull(id, nome, dataCriacao, corUniformePrincipal, corUniformeSecundario);
 
-        jogadores = new ArrayList<>();
         this.id = id;
         this.nome = nome;
         this.dataCriacao = dataCriacao;
         this.corUniformePrincipal = corUniformePrincipal;
         this.corUniformeSecundario = corUniformeSecundario;
-    }
-
-    public void adicionaJogador(Jogador jogador) {
-        jogadores.add(jogador);
     }
 
     @Override
@@ -71,7 +63,7 @@ public class TimeDeFutebol {
         return idCapitao;
     }
 
-    public List<Jogador> getJogadores() {
-        return jogadores;
+    public void setIdCapitao(Long idCapitao) {
+        this.idCapitao = idCapitao;
     }
 }

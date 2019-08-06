@@ -1,5 +1,6 @@
 package times_futebol;
 
+import times_futebol.exceptions.CapitaoNaoInformadoException;
 import times_futebol.exceptions.IdentificadorUtilizadoException;
 import times_futebol.exceptions.JogadorNaoEncontradoException;
 import times_futebol.exceptions.TimeNaoEncontradoException;
@@ -16,22 +17,22 @@ public interface MeuTimeInterface {
     void incluirJogador(Long var1, Long var2, String var3, LocalDate var4, Integer var5, BigDecimal var6) throws IdentificadorUtilizadoException, TimeNaoEncontradoException;
 
     
-    void definirCapitao(Long var1);
+    void definirCapitao(Long var1) throws JogadorNaoEncontradoException, TimeNaoEncontradoException;
 
     
-    Long buscarCapitaoDoTime(Long var1);
+    Long buscarCapitaoDoTime(Long var1) throws TimeNaoEncontradoException, CapitaoNaoInformadoException;
 
     
     String buscarNomeJogador(Long var1) throws JogadorNaoEncontradoException;
 
     
-    String buscarNomeTime(Long var1);
+    String buscarNomeTime(Long var1) throws TimeNaoEncontradoException;
 
     
     Long buscarJogadorMaiorSalario(Long var1);
 
     
-    BigDecimal buscarSalarioDoJogador(Long var1);
+    BigDecimal buscarSalarioDoJogador(Long var1) throws JogadorNaoEncontradoException;
 
     
     List<Long> buscarJogadoresDoTime(Long var1);
@@ -49,6 +50,6 @@ public interface MeuTimeInterface {
     List<Long> buscarTopJogadores(Integer var1);
 
     
-    String buscarCorCamisaTimeDeFora(Long var1, Long var2);
+    String buscarCorCamisaTimeDeFora(Long var1, Long var2) throws TimeNaoEncontradoException;
 }
 

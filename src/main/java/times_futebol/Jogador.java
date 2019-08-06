@@ -3,7 +3,7 @@ package times_futebol;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import static times_futebol.NotNullValidator.validateNotNull;
+import static times_futebol.NotNullValidador.validarNotNull;
 
 public class Jogador {
     private Long id;
@@ -15,7 +15,7 @@ public class Jogador {
 
     public Jogador(Long id, Long idTime, String nome, LocalDate dataNascimento, Integer nivelHabilidade, BigDecimal salario) {
 
-        validateNotNull(id, idTime, nome, dataNascimento, nivelHabilidade, salario);
+        validarNotNull(id, idTime, nome, dataNascimento, nivelHabilidade, salario);
 
         this.id = id;
         this.idTime = idTime;
