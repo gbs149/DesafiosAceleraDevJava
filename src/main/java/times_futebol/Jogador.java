@@ -1,5 +1,6 @@
 package times_futebol;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -14,9 +15,6 @@ public class Jogador {
     private BigDecimal salario;
 
     public Jogador(Long id, Long idTime, String nome, LocalDate dataNascimento, Integer nivelHabilidade, BigDecimal salario) {
-
-        validarNotNull(id, idTime, nome, dataNascimento, nivelHabilidade, salario);
-
         this.id = id;
         this.idTime = idTime;
         this.nome = nome;
@@ -25,26 +23,32 @@ public class Jogador {
         this.salario = salario;
     }
 
+    @NotNull
     public Long getId() {
         return id;
     }
 
+    @NotNull
     public Long getIdTime() {
         return idTime;
     }
 
+    @NotNull
     public String getNome() {
         return nome;
     }
 
+    @NotNull
     public LocalDate getDataNascimento() {
         return dataNascimento;
     }
 
+    @NotNull
     public Integer getNivelHabilidade() {
         return nivelHabilidade;
     }
 
+    @NotNull
     public BigDecimal getSalario() {
         return salario;
     }
