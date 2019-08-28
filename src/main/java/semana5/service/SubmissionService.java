@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SubmissionService implements SubmissionServiceInterface {
@@ -16,12 +17,13 @@ public class SubmissionService implements SubmissionServiceInterface {
 
     @Override
     public BigDecimal findHigherScoreByChallengeId(Long challengeId) {
-        return null;
+        return BigDecimal.valueOf(Optional.ofNullable(submissionRepository.findHigherScoreByChallengeId(challengeId))
+                .orElse(0f));
     }
 
     @Override
     public List<Submission> findByChallengeIdAndAccelerationId(Long challengeId, Long accelerationId) {
-        return null;
+        return submissionRepository.findByChallengeIdAndAccelerationId(challengeId, accelerationId);
     }
 
     @Override

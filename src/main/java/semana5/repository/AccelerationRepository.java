@@ -9,7 +9,7 @@ import java.util.List;
 public interface AccelerationRepository extends CrudRepository<Acceleration, Long> {
 
     @Query("select a from Acceleration a " +
-            "inner join Candidate c " +
+            "inner join a.candidates c " +
             "where c.id.company.id = :companyId")
     List<Acceleration> findByCompanyId(Long companyId);
 }

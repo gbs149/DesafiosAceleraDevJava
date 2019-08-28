@@ -7,16 +7,15 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface CompanyRepository extends CrudRepository<Company, Long> {
-    @Query("from Company c " +
-            "left join Candidate ca " +
-            "left join Acceleration a " +
-            "where a.id = :acceleraionId")
+    @Query("select distinct c from Company c " +
+            "inner join c.candidates ca " +
+            "inner join ca.id.acceleration a " +
+            "where a.id = :accelerationId")
     List<Company> findByAccelerationId(Long accelerationId);
 
     @Query("from Company c " +
-            "left join Candidate ca " +
-            "left join User u " +
+            "left join c.candidates ca " +
+            "left join ca.id.user u " +
             "where u.id = :userId")
     List<Company> findByUserId(Long userId);
-
 }

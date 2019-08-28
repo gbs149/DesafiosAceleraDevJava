@@ -21,12 +21,12 @@ public class UserService implements UserServiceInterface {
 
     @Override
     public List<User> findByAccelerationName(String name) {
-        return null;
+        return userRepository.findByAccelerationName(name);
     }
 
     @Override
     public List<User> findByCompanyId(Long companyId) {
-        return null;
+        return userRepository.findByCompanyId(companyId);
     }
 
     @Override
