@@ -5,4 +5,5 @@ import com.challenge.entity.SubmissionId;
 import org.springframework.data.repository.CrudRepository;
 
 public interface SubmissionRepository extends CrudRepository<Submission, SubmissionId> {
+
 }

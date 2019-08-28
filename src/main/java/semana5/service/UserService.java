@@ -31,6 +31,6 @@ public class UserService implements UserServiceInterface {
 
     @Override
     public User save(User object) {
-        return null;
+        return userRepository.save(object);
     }
 }

@@ -1,7 +1,9 @@
 package semana5.service;
 
 import com.challenge.entity.Company;
+import com.challenge.repository.CompanyRepository;
 import com.challenge.service.interfaces.CompanyServiceInterface;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,23 +11,26 @@ import java.util.Optional;
 
 @Service
 public class CompanyService implements CompanyServiceInterface {
+    @Autowired
+    CompanyRepository companyRepository;
+
     @Override
     public Optional<Company> findById(Long id) {
-        return Optional.empty();
+        return companyRepository.findById(id);
     }
 
     @Override
     public List<Company> findByAccelerationId(Long accelerationId) {
-        return null;
+        return companyRepository.findByAccelerationId(accelerationId);
     }
 
     @Override
     public List<Company> findByUserId(Long userId) {
-        return null;
+        return companyRepository.findByUserId(userId);
     }
 
     @Override
     public Company save(Company object) {
-        return null;
+        return companyRepository.save(object);
     }
 }
